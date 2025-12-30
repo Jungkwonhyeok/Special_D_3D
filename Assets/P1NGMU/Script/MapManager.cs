@@ -74,6 +74,46 @@ namespace P1NGMU
             new MapData(0, -1),
         };
 
+        public bool isRoad(int x, int z, int size)
+        {
+            for (int i = 0; i < size; i++)
+            {
+                for(int j = 0; j < size; j++)
+                {
+                    int posX= x+i;
+                    int posZ= z+j;
+                    if(posX >= mapWidth || posX <= 0 || posZ >= mapHeight || posZ <= 0)
+                    {
+                        return false;
+                    }
+                    MapData temp = GetMapData(posX, posZ);
+                    if(temp.blockName != BlockName.Walkable)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public MapData GetMapData(int x, int z)
+        {
+            return mapData.Find(data => data.x == x && data.z == z);
+        }
+
+        public void ChangeBuilding(int x, int z, int size, BlockName blockName)
+        {
+            for (int i = 0; i< size; i++)
+            {
+                for ( int j = 0; j < size; j++)
+                {
+                    int posX = x+i;
+                    int posZ = z+j;
+                    GetMapData(posX, posZ).blockName = blockName;
+                }
+            }
+        }
+
         public void GenerateMap()
         {
             mapWidth = MapInfo.width;
